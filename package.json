@@ -1,0 +1,24 @@
+{
+  "name": "form",
+  "version": "1.0.0",
+  "description": "form management",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://drihemz@bitbucket.org/drihemz/form.git"
+  },
+  "keywords": [
+    "form"
+  ],
+  "author": "zouheir",
+  "license": "ISC",
+  "homepage": "https://bitbucket.org/drihemz/form#readme",
+  "dependencies": {
+    "body-parser": "^1.17.1",
+    "express": "^4.15.2"
+  }
+}
