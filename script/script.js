@@ -83,8 +83,8 @@ $(document).ready(function(){
 
                 $.ajax({
                     type: "POST",
-                    url: "/",
-                    data: {data : JSON.stringify(array) },
+                    url: "/submit",
+                    data: {data : array },
                     success: function(){
                         alert("data sent");
                     },
