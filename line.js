@@ -8,6 +8,7 @@ var request = require('request');
 const wait = 5000;
 var pallet = [];
 var pallet_C2Z1;
+var orders = require('./server');
 
 
 app.use(bodyParser.json());
@@ -39,6 +40,11 @@ connection.connect(function (err) {
 var workstation= function (wsnumber, capability) {
     this.wsnumber = wsnumber;
     this.capability = capability;
+    this.zone1ID = 0;
+    this.zone2ID = 0;
+    this.zone3ID = 0;
+    this.zone4ID = 0;
+    this.zone5ID = 0;
     this.zone1=false;
     this.zone2=false;
     this.zone3=false;
@@ -87,7 +93,7 @@ workstation.prototype.runServer = function (port) {
 
 
                 if ((req.body.payload.PalletID != -1)) { //If new pallet is introduced and not leaving (as we receive notifications for both)
-
+                    var palletID1 =req.body.payload.PalletID;
                     switch (req.body.senderID) {
 
                         case "SimCNV1":
@@ -118,6 +124,20 @@ workstation.prototype.runServer = function (port) {
                             break;
 
                         case "SimCNV7":
+                            var counter =1;
+                            connection.query("Select * from Pallets where Status = 'pending'", function (rows) {
+                                    var index = rows[0].Sno;
+                                    connection.query("UPDATE Pallets SET Status = 'in_production' where Sno = ?", index, function(){
+                                        console.log('Loaded Status updated');
+                                        connection.query("UPDATE Pallets SET PalletID = '?' where Status = '?'", [palletID1,index], function(){
+
+                                        });
+                                    })
+
+
+                            });
+
+
 
                             break;
 

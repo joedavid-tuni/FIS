@@ -9,7 +9,9 @@ var path = require('path');
 var mysql = require('mysql');
 var formidable = require('formidable');
 var builder = require('xmlbuilder');
-var bodyParser = require('body-parser')
+var bodyParser = require('body-parser');
+var XMLWriter = require('xml-writer');
+
 
 var connection = mysql.createConnection({
     host: 'localhost',
@@ -22,8 +24,70 @@ var connection = mysql.createConnection({
 var CustomerID;
 var OrderID;
 var SNo ;
+counter =0;
+module.exports = order = [];
+
+function push(OrderID,CustomerID, ProductID,Date_time,Name, FrameType, FrameColour, ScreenType, ScreenColour, KeyboardType, KeyboardColour, Status ){
+
+order.push({orderID: OrderID,customerID: CustomerID,
+    productID: ProductID,
+    orderTime: Date_time,
+    name: Name,
+    frameType: FrameType,
+    frameColour: FrameColour,
+    screenType: ScreenType,
+    screenColour: ScreenColour,
+    keyboardType: KeyboardType,
+    keyboardColour: KeyboardColour,
+    status : Status
+});
 
 
+}
+
+function sendxml(FrameType, FrameColour, ScreenType, ScreenColour, KeyboardType, KeyboardColour){
+var ftype,stype,ktype;
+    ++counter;
+
+switch(FrameType){case 'frame1': ftype =1; break;case 'frame2': ftype =2; break;case 'frame3': ftype =3; break;}
+switch(ScreenType){case 'Screen1': stype =1; break;case 'Screen2': stype =2; break;case 'Screen3': stype =3; break;}
+switch(KeyboardType){case 'Keyboard1': ktype =1; break;case 'Keyboard2': ktype =2; break;case 'Keyboard3': ktype =3; break;}
+
+    xw = new XMLWriter;
+    xw.startDocument('1.0', 'UTF-8');
+    xw.startElement('order');
+    xw.writeAttribute('id', counter);
+    xw.startElement('product');
+    xw.startElement('screen');
+    xw.writeAttribute('model',stype);
+    xw.writeAttribute('color',ScreenColour);
+    xw.endElement();
+    xw.startElement('keyboard');
+    xw.writeAttribute('model',ktype);
+    xw.writeAttribute('color', KeyboardColour);
+    xw.endElement();
+    xw.startElement('frame');
+    xw.writeAttribute('model',ftype);
+    xw.writeAttribute('color', FrameColour);
+    xw.endElement();
+    xw.endElement();
+    xw.endElement();
+    xw.endDocument();
+    var xml = xw.toString();
+
+    var options = {
+        method: 'POST',
+        body: xml,
+        url: "http://requestb.in/zuo4w5zu",
+        headers: {'Content-Type': 'application/xml'}
+    };
+    //Print the result of the HTTP POST request
+    request(options, function () {
+        console.log("Xml for product "+counter+" requested to Orchestrator" );
+
+    });
+
+}
 
 
 app.use("/css", express.static(__dirname + '/css'));
@@ -68,7 +132,10 @@ connection.connect(function (err) {
 
 app.get('/', function(req, res) {
     res.sendFile(path.join(__dirname + '/form.html'));
+    console.log(order);
 });
+
+
 
 app.post('/submit', function(req, res) {
 
@@ -145,17 +212,25 @@ app.post('/submit', function(req, res) {
 
                     for (rows_ = 0; rows_ < rows.length; rows_++) {   //if using dynamic form revert to rows.length instead if ++counter
                         for (var qty = 0; qty < rows[rows_].Quantity; qty++) {
-                            var random =  Math.floor(Math.random()*90000) + 10000;
-                            var sql = "INSERT INTO Pallets(CustomerID, OrderID, OrderTime, Name, ProductID) VALUES (?)";
-                            var values1 = [rows[rows_].CustomerID, rows[rows_].OrderID,rows[rows_].Date_time, rows[rows_].Name, rows[rows_].ProductID];
-                            connection.query(sql, [values1], function (error, results, fields) {
-                                if(!error) {
-                                    console.log('Inserted Successfully into Pallets Table');
-                                }
-                                else if(error){
-                                    console.log(error);
-                                }
-                            })
+                            push(rows[rows_].OrderID,rows[rows_].CustomerID,rows[rows_].ProductID,rows[rows_].Date_time,rows[rows_].Name,rows[rows_].FrameType,rows[rows_].FrameColour,
+                                rows[rows_].ScreenType,rows[rows_].ScreenColour, rows[rows_].KeyboardType,rows[rows_].KeyboardColour, rows[rows_].Status)
+
+                            sendxml(rows[rows_].FrameType,rows[rows_].FrameColour,rows[rows_].ScreenType,rows[rows_].ScreenColour, rows[rows_].KeyboardType,rows[rows_].KeyboardColour, function(){
+
+                                var random =  Math.floor(Math.random()*90000) + 10000;
+                                var sql = "INSERT INTO Pallets(CustomerID, OrderID, OrderTime, Name, ProductID) VALUES (?)";
+                                var values1 = [rows[rows_].CustomerID, rows[rows_].OrderID,rows[rows_].Date_time, rows[rows_].Name, rows[rows_].ProductID];
+                                connection.query(sql, [values1], function (error, results, fields) {
+                                    if(!error) {
+                                        console.log('Inserted Successfully into Pallets Table');
+                                    }
+                                    else if(error){
+                                        console.log(error);
+                                    }
+                                });
+                            });
+
+
                         }
                     }
                     for (rows_ = 0; rows_ < rows.length; rows_++) {
