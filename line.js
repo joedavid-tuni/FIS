@@ -8,7 +8,7 @@ var request = require('request');
 const wait = 5000;
 var pallet = [];
 var pallet_C2Z1;
-var orders = require('./server');
+var orders = require('./web');
 
 
 app.use(bodyParser.json());
@@ -21,7 +21,7 @@ var connection = mysql.createConnection({
     port: 3306, //Port number to connect to the db
     user: 'root', //The user name assigned to work with the database
     password: 'oracle', //password for the database
-    database: 'dasdfinal' //Name of the database
+    database: 'fisfinal' //Name of the database
 });
 
 //CONNECTING TO DATABASE
@@ -90,72 +90,123 @@ workstation.prototype.runServer = function (port) {
         switch (req.body.id){
 
             case "Z1_Changed":
+                var zone1="_Z1";
 
 
                 if ((req.body.payload.PalletID != -1)) { //If new pallet is introduced and not leaving (as we receive notifications for both)
-                    var palletID1 =req.body.payload.PalletID;
+
+
+
+
                     switch (req.body.senderID) {
 
                         case "SimCNV1":
+                            var palletID1 = req.body.payload.PalletID;
 
-
-
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS1_Z1' where PalletID = ?",palletID1, function (rows,results) {
+                                    console.log('Location Updated');
+                            });
                             break;
 
-                        case "SimCNV2":
 
+
+                        case "SimCNV2":
+                            var palletID2 = req.body.payload.PalletID;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS2_Z1' where PalletID = ?",palletID2, function (rows,results) {
+                                console.log('Location Updated');
+                            });
 
                             break;
                         case "SimCNV3":
-
+                            var palletID3 = req.body.payload.PalletID;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS3_Z1' where PalletID = ?",palletID3, function (rows,results) {
+                                console.log('Location Updated');
+                            });
 
                             break;
                         case "SimCNV4":
-
+                            var palletID4 = req.body.payload.PalletID;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS4_Z1' where PalletID = ?",palletID4, function (rows,results) {
+                                console.log('Location Updated');
+                            });
                             break;
                         case "SimCNV5":
-                            //CHECKING IF THE CURRENT WORKSTATION IS CAPABLE OF SERVING
-
-
+                            var palletID5 = req.body.payload.PalletID;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS5_Z1' where PalletID = ?",palletID5, function (rows,results) {
+                                console.log('Location Updated');
+                            });
                             break;
 
                         case "SimCNV6":
-
+                            var palletID6 = req.body.payload.PalletID;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS6_Z1' where PalletID = ?",palletID6, function (rows,results) {
+                                console.log('Location Updated');
+                            });
                             break;
 
                         case "SimCNV7":
+                            var palletID7 = req.body.payload.PalletID;
+
                             var counter =1;
-                            connection.query("Select * from Pallets where Status = 'pending'", function (rows) {
-                                    var index = rows[0].Sno;
-                                    connection.query("UPDATE Pallets SET Status = 'in_production' where Sno = ?", index, function(){
-                                        console.log('Loaded Status updated');
-                                        connection.query("UPDATE Pallets SET PalletID = '?' where Status = '?'", [palletID1,index], function(){
+                            // connection.query("Select * from Pallets where Status = 'pending'", function (rows) {
+                            //         var index = rows[0].Sno;
+                            //         connection.query("UPDATE Pallets SET Status = 'in_production' where Sno = ?", index, function(){
+                            //             console.log('Loaded Status updated');
+                            //             connection.query("UPDATE Pallets SET PalletID = '?' where Status = '?'", [palletID1,index], function(){
+                            //             });
+                            //         })
+                            // });
 
-                                        });
-                                    })
-
-
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS7_Z1' where PalletID = ?",palletID7, function (rows,results) {
+                                console.log('Location Updated');
                             });
-
 
 
                             break;
 
                         case "SimCNV8":
+                            // var palletID1 = req.body.payload.PalletID;
+
+                            var palletID8 = req.body.payload.PalletID;
+                            console.log(palletID8);
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS8_Z1' where PalletID = ?",palletID8, function (rows,results, error) {
+                                console.log('Location Updated');
+                                console.log(error);
+                            });
 
                             break;
 
                         case "SimCNV9":
 
+                            var palletID9 = req.body.payload.PalletID;
+
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS9_Z1' where PalletID = ?",palletID9, function (rows,results) {
+                                console.log('Location Updated');
+                            });
+
                             break;
                         case "SimCNV10":
 
+                            var palletID10 = req.body.payload.PalletID;
+
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS10_Z1' where PalletID = ?",palletID10, function (rows,results) {
+                                console.log('Location Updated');
+                            });
                             break;
                         case "SimCNV11":
+                            var palletID11 = req.body.payload.PalletID;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS11_Z1' where PalletID = ?",palletID11, function (rows,results) {
+                                console.log('Location Updated');
+                            });
 
                             break;
 
                         case "SimCNV12":
+
+                            var palletID12 = req.body.payload.PalletID;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS12_Z1' where PalletID = ?",palletID12, function (rows,results) {
+                                console.log('Location Updated');
+                            });
 
                             break;
                     }
@@ -169,6 +220,7 @@ workstation.prototype.runServer = function (port) {
                 break;
 
             case "Z2_Changed":
+                var zone2="_Z2";
 
                 if ((req.body.payload.PalletID != -1)) {
 
@@ -177,23 +229,130 @@ workstation.prototype.runServer = function (port) {
 
 
                         case "SimCNV1":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS1_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS1_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case"SimCNV7":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS7_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS7_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
 
                             break;
 
                         case "SimCNV2":
-                        case "SimCNV3":
-                        case "SimCNV4":
-                        case "SimCNV5":
-                        case "SimCNV6":
-                        case "SimCNV8":
-                        case "SimCNV9":
-                        case "SimCNV10":
-                        case "SimCNV11":
-                        case "SimCNV12":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS2_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS2_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
 
-
+                            });
                             break;
+                        case "SimCNV3":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS3_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS3_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+                        case "SimCNV4":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS4_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS4_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+                        case "SimCNV5":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS5_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS5_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+                        case "SimCNV6":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS6_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS6_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+                        case "SimCNV8":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS8_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS8_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+
+                        case "SimCNV9":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS9_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS9_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+                        case "SimCNV10":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS10_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS10_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+                        case "SimCNV11":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS11_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS11_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+                        case "SimCNV12":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS12_Z1'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS12_Z2' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
+
+
                     }
 
 
@@ -214,6 +373,8 @@ workstation.prototype.runServer = function (port) {
 
             case "Z3_Changed":
 
+                var zone3="_Z3";
+
                 //IF A PALLET ARRIVES AT ZONE 3 AND THAT HAPPENS NOT AT WORKSTATION 7 (TO PREVENT SIMILAR CONDITIONS WHILE LOADING PALLET)
                 if (req.body.payload.PalletID != -1) {
 
@@ -222,19 +383,160 @@ workstation.prototype.runServer = function (port) {
 
                         case"SimCNV7":
 
+                            //FOR THE SIMULATOR
+                            var palletID = req.body.payload.PalletID;
+                            var WS7 = "WS7";
+                            var currloc = WS7.concat(zone3);
+                            console.log(currloc);
+
+                            connection.query("Select * from Pallets where Status = 'pending'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Status = 'in_production' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                                connection.query("UPDATE Pallets SET PalletID = ? where Sno= ?", [palletID,index], function(error){
+                                    if(!error) {
+                                        console.log('Pallet Id updated');
+                                    }
+                                    else {
+                                        console.log(error);
+                                    }
+                                });
+                                connection.query("UPDATE Pallets SET Current_loc = ? where Sno = ?", [currloc,index], function(error){
+                                    if(!error) {
+                                        console.log('Current Location updated');
+                                    }
+                                    else {
+                                        console.log(error);
+                                    }
+
+                                });
+                            });
+
+                            //FOR THE PHYSICAL LINE
+                            // connection.query("Select * from Pallets where Current_Loc = 'WS7_Z2'", function (rows,results) {
+                            //     console.log('Results',results);
+                            //     var index = results[0].Sno;
+                            //     connection.query("UPDATE Pallets SET Current_Loc = 'WS7_Z3' where Sno = ?", index, function(){
+                            //         console.log('Loaded Status updated');
+                            //     });
+                            //
+                            // });
+
                             break;
 
                         case "SimCNV1":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS1_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS1_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV2":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS2_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS2_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV3":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS3_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS3_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV4":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS4_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS4_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV5":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS5_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS5_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV6":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS6_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS6_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV8":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS8_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS8_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV9":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS9_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS9_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV10":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS10_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS10_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV11":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS11_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS11_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
                         case "SimCNV12":
+                            connection.query("Select * from Pallets where Current_Loc = 'WS12_Z2'", function (rows,results) {
+                                console.log('Results',results);
+                                var index = results[0].Sno;
+                                connection.query("UPDATE Pallets SET Current_Loc = 'WS12_Z3' where Sno = ?", index, function(){
+                                    console.log('Loaded Status updated');
+                                });
+
+                            });
+                            break;
 
 
                             break;
@@ -252,8 +554,118 @@ workstation.prototype.runServer = function (port) {
             case "Z4_Changed":
 
 
-
                 if ((req.body.payload.PalletID != -1)) {
+
+                switch (req.body.senderID) {
+
+                    case "SimCNV2":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS2_Z1'", function (rows,results) {
+                        console.log('Results',results);
+                        var index = results[0].Sno;
+                        connection.query("UPDATE Pallets SET Current_Loc = 'WS2_Z4' where Sno = ?", index, function(){
+                            console.log('Loaded Status updated');
+                        });
+
+                    });
+                        break;
+                    case "SimCNV3":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS3_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS3_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+                    case "SimCNV4":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS4_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS4_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+
+                        break;
+                    case "SimCNV5":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS5_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS5_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+                    case "SimCNV6":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS6_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS6_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+                    case "SimCNV8":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS8_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS8_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+                    case "SimCNV9":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS9_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS9_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+                    case "SimCNV10":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS10_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS10_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+                    case "SimCNV11":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS11_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS11_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+                    case "SimCNV12":
+                        connection.query("Select * from Pallets where Current_Loc = 'WS12_Z1'", function (rows,results) {
+                            console.log('Results',results);
+                            var index = results[0].Sno;
+                            connection.query("UPDATE Pallets SET Current_Loc = 'WS12_Z4' where Sno = ?", index, function(){
+                                console.log('Loaded Status updated');
+                            });
+
+                        });
+                        break;
+
+
+
+                }
+
+
 
 
                 }
@@ -268,51 +680,50 @@ workstation.prototype.runServer = function (port) {
                 break;
 
             case "Z5_Changed":
-                if (req.body.payload.PalletID == -1) {
 
 
-                    switch (req.body.senderID) {
 
-                        case "SimCNV2":
-                        case "SimCNV3":
-                        case "SimCNV4":
-                        case "SimCNV5":
-                        case "SimCNV6":
-                        case "SimCNV8":
-                        case "SimCNV9":
-                        case "SimCNV10":
-                        case "SimCNV11":
-                        case "SimCNV12":
-
-                           break;
-
-                    }
-                }
-                else if (req.body.payload.PalletID != -1) {
-
-
-                }
                 res.end();
 
                 break;
 
             case "DrawEndExecution":
-
+                console.log(req.body);
                 console.log('\n~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~');
-
+                var pallid = req.body.payload.PalletID;
+                var currentdate = new Date();
+                var datetime = currentdate.getFullYear() + "-"
+                    + ('0' + currentdate.getMonth()).slice(-2) + "-"
+                    + ('0' + currentdate.getDay()).slice(-2) + "T"
+                    + ('0' + currentdate.getHours()).slice(-2) + ":"
+                    + ('0' + currentdate.getMinutes()).slice(-2) + ":"
+                    + ('0' + currentdate.getSeconds()).slice(-2) + "."
+                    + ('0' + currentdate.getMilliseconds()).slice(-2);
+                console.log(datetime);
                 if ((req.body.payload.Recipe > 0) && (req.body.payload.Recipe < 4)) {
 
+                    var key1 =  "ready" +" | "+ req.body.senderID +" I "+ datetime;
+                    console.log(key1);
+                    connection.query("UPDATE Pallets SET Frame = ? WHERE PalletID = ?", [key1, pallid], function(error){
+                        console.log(error);
+                    });
 
-                    // },1000);
                 }
+
 
                 if ((req.body.payload.Recipe > 3) && (req.body.payload.Recipe < 7)) {
 
-                    // },1000);
+                    var key2=  "ready" +" | "+ req.body.senderID +" | "+ datetime;
+                    connection.query("UPDATE Pallets SET Screen = ? WHERE PalletID = ?", [key2, pallid], function(error){
+                        console.log(error);
+                    });
                 }
 
                 if ((req.body.payload.Recipe > 6) && (req.body.payload.Recipe < 10)) {
-
+                    var key3 = "ready" +" | "+ req.body.senderID +" | "+ datetime;
+                    connection.query("UPDATE Pallets SET Keyboard = ? WHERE PalletID = ?", [key3, pallid], function(error){
+                        console.log(error);
+                    });
                 }
                 // res.writeHead(202);
                 res.end();
