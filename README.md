@@ -10,7 +10,7 @@ To create a model to identify, organize and distribute the pertinent information
 ## Programming Environment
 * Language: JavaScript / nodeJs
 * IDE: Webstorm
-* Software Design: Visual Paradigm
+* Software Design Tool: Visual Paradigm
 
 ## Physical Environment
 
@@ -54,3 +54,85 @@ The FASTory is equipped with INICO S1000 Remote Terminal Units (RTUs). INICO S10
 
 
 # Solution
+
+## System Architecture
+
+<a href="https://drive.google.com/uc?export=view&id=1V7rXDKlPRdt0Ys3_nBNnIPnGuYmDiw1a"><img src="https://drive.google.com/uc?export=view&id=1V7rXDKlPRdt0Ys3_nBNnIPnGuYmDiw1a" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+The system uses the architecture as displayed in the Figure in the previous page.
+The NodeJS Application as a whole consists of the UI Layer and the System Integration Layer of which the interfaces the Monitoring and the Persistence Layers.
+The Production Line is manually orchestrated by the user and these events are then sent to the node application which are subscribed to it. The node application processes the information and manipulates it to perform two main activities.
+* It gives a real-time feedback to the user about the statuses of the pallets and displays it to
+the web browser.
+* It stores the information permanently in the MySQL Database (Persistence Layer)
+
+## Front End Development
+
+<a href="https://drive.google.com/uc?export=view&id=1oT7rw3c9mQKmrl3sbpLjUiQ0gYEsRUgw"><img src="https://drive.google.com/uc?export=view&id=1oT7rw3c9mQKmrl3sbpLjUiQ0gYEsRUgw" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+### Features of the UI
+* Uses Form Validation to not allow users to Place Order without entering vital information such as Name, Address and Phone number
+* Uses CSS to remind user of the missing information.
+* Enables User to enter multiple orders using the Add Order button
+* Allows User to delete and order by ticking a check box and pressing the delete row button in case the user inputs an erroneous order.
+* Shows a preview of the Order entered so far.
+
+### How to place an Order
+* Fill User details in the Name, Address and Phone number fields
+* Select the Order Variant by the drop down menus
+* Add multiple Orders using the Add row Button
+* Delete any order if necessary by checking the box adjacent to the order and pressing the “delete order button”
+* Press the send button to place the order
+
+### Real-Time Analytics
+
+<a href="https://drive.google.com/uc?export=view&id=1anaBEmqfVdC9Fp1_ayyN95WNIo6VIAHF"><img src="https://drive.google.com/uc?export=view&id=1anaBEmqfVdC9Fp1_ayyN95WNIo6VIAHF" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+
+## Back-End Development
+
+### My SQL Database
+
+#### Customers Table
+
+<a href="https://drive.google.com/uc?export=view&id=1-7l2j-GUGHqtDdDJdwPqZeKn2Yu0FHKR"><img src="https://drive.google.com/uc?export=view&id=1-7l2j-GUGHqtDdDJdwPqZeKn2Yu0FHKR" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+The Customer Table consists of 5 fields whose Names and Data Types are shown above. The CustomerID Field is the Primary Key of the Table and is set to increment from 1000. The Name Field takes a NOT NULL constraint which simply means that it cannot be left empty. This condition is taken care of the Front End Script( JavaScript and CSS) which does not allow the user to submit if the field is left blank (will be shown in the Front End Development Section of this Paper).
+
+Queries Used for the Table (multiple queries are used for clarity even though they could be combined:
+* CREATE TABLE Customers(Sno int(5), CustomerID int(5) PRIMARY KEY, Name char(30) NOT NULL,
+* Address char(50), TelephoneNo BIGINT UNSIGNED);
+* ALTER TABLE Customers MODIFY CustomerID INT(5) AUTO_INCREMENT;
+* ALTER TABLE Customers AUTO_INCREMENT=1000;
+
+#### Products Table
+
+<a href="https://drive.google.com/uc?export=view&id=1nEHwwQ0nTxmGi6cd-i0RIMkc5A7NDMxy"><img src="https://drive.google.com/uc?export=view&id=1nEHwwQ0nTxmGi6cd-i0RIMkc5A7NDMxy" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+Queries Used for the Table:
+* **CREATE TABLE** Products(Sno **INT(5**), ProductID **int(5) PRIMARY KEY**, FrameType **char(10)**, FrameColour **char(10)**, ScreenType **char(10)**, ScreenColour **char(10)**, KeyboardType **char(10)**, KeyboardColour **char(10)**, Quantity **int(3)**, Status **enum**('ordered','processed','manufactured'));
+
+* **ALTER TABLE** Products **ALTER** Quantity **SET DEFAULT** 1;
+* **ALTER TABLE** Products **ALTER Status SET DEFAULT** ordered;
+
+#### Orders Table
+
+<a href="https://drive.google.com/uc?export=view&id=1x569ibiLXHQiREWVUJVjfRgbLMvpGVFb"><img src="https://drive.google.com/uc?export=view&id=1x569ibiLXHQiREWVUJVjfRgbLMvpGVFb" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+The Orders Table Consists of 6 Fields whose Names and Data Types are shown above. It is to be noted that OrderID field is the Primary Key and is set to Increment at a starting Value of 5000. Also the Date_time field takes a default value of the current time at the time of the order.
+
+**Queries Used for the Table:**
+
+* **CREATE TABLE** Orders (SNo int(5), OrderID int(5) PRIMARY KEY, CustomerID int(5), ProductID int(5), Quantity int(3), Date_time TIMESTAMP DEFAULT NOW());
+* **ALTER TABLE** Orders **MODIFY** OrderID **INT(5) AUTO_INCREMENT**;
+* **ALTER TABLE** Orders **AUTO_INCREMENT**=5000;
+
+#### Pallets Table
+
+<a href="https://drive.google.com/uc?export=view&id=1FGPcLwfBS_0635HSQc6f7CXkVFSvqt3Y"><img src="https://drive.google.com/uc?export=view&id=1FGPcLwfBS_0635HSQc6f7CXkVFSvqt3Y" style="width: 500px; max-width: 100%; height: auto" title="Click for the larger version." /></a>
+
+**Queries Used for the Table:**
+
+* **CREATE TABLE** Pallets (Sno **INT(5) PRIMARY KEY**, CustomerID **INT(5) DEFAULT NULL**, OrderID **INT(5)**, OrderTime **VARCHAR(30)**, Name **VARCHAR(30) DEFAULT NULL**, ProductID **VARCHAR (20)**, PalletID **BIGINT UNSIGNED**, Frame **VARCHAR(50) DEFAULT** 'Pending',Screen VARCHAR(50) **DEFAULT** 'Pending',Keyboard **VARCHAR(50) DEFAULT** 'Pending',Current_Loc **VARCHAR(15) DEFAULT** 'N/A' ,Status **enum**('pending','in_production' , 'manufactured') **DEFAULT** 'pending');
+* **ALTER TABLE** Pallets **MODIFY** Sno **INT(5) AUTO_INCREMENT**;
+* **ALTER TABLE** Pallets **AUTO_INCREMENT**=1;
